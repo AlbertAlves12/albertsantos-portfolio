@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albert Santos | Engenharia de Dados & Automação B2B</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Chart.js para Gráficos Interativos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Tema Escuro */
+        [data-theme="dark"] {
+            --bg-main: #0b1329;
+            --bg-header: #111d38;
+            --card-bg: #162238;
+            --metric-bg: #0b1329;
+            --border-color: #2a3a5c;
+            --text-title: #ffffff;
+            --text-body: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #22c55e;
+            --btn-niche-bg: #162238;
+            --btn-niche-text: #e2e8f0;
+            --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Tema Claro Refinado */
+        [data-theme="light"] {
+            --bg-main: #f8fafc;
+            --bg-header: #ffffff;
+            --card-bg: #ffffff;
+            --metric-bg: #f1f5f9;
+            --border-color: #cbd5e1;
+            --text-title: #0f172a;
+            --text-body: #1e293b;
+            --text-muted: #64748b;
+            --accent-blue: #0284c7;
+            --accent-green: #16a34a;
+            --btn-niche-bg: #ffffff;
+            --btn-niche-text: #334155;
+            --shadow-card: 0 8px 20px rgba(15, 23, 42, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            padding-bottom: 4rem;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* Container Expandido para aproveitar a tela */
+        .custom-container {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-section {
+            background-color: var(--bg-header);
+            border-bottom: 1px solid var(--border-color);
+            padding: 3rem 0;
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-custom {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-custom:hover {
+            transform: translateY(-3px);
+        }
+
+        .metric-box {
+            background-color: var(--metric-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-green);
+            line-height: 1.1;
+        }
+
+        .badge-tech {
+            background-color: var(--metric-bg);
+            color: var(--accent-blue);
+            border: 1px solid var(--border-color);
+            padding: 0.5em 0.9em;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-right: 0.4rem;
+            margin-bottom: 0.4rem;
+            display: inline-block;
+        }
+
+        .step-number {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            font-weight: 800;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1da851;
+            color: #fff;
+        }
+
+        .text-desc {
+            color: var(--text-body) !important;
+            font-size: 1.05rem;
+        }
+
+        .text-title-custom {
+            color: var(--text-title) !important;
+        }
+
+        .text-muted-custom {
+            color: var(--text-muted) !important;
+        }
+
+        .link-social {
+            color: var(--text-body);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-size: 1.05rem;
+        }
+
+        .link-social:hover {
+            color: var(--accent-blue);
+        }
+
+        .niche-btn {
+            background-color: var(--btn-niche-bg);
+            color: var(--btn-niche-text);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 0.7rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .niche-btn:hover, .niche-btn.active {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+        }
+
+        .theme-toggle-btn {
+            background-color: var(--card-bg);
+            color: var(--text-title);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 230px;
+            width: 100%;
+        }
+
+        .dynamic-fade {
+            transition: opacity 0.25s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Bio -->
+    <header class="header-section mb-5">
+        <div class="custom-container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+                <div>
+                    <h1 class="display-4 fw-bold text-title-custom mb-1">Albert Santos</h1>
+                    <p class="text-info fw-bold fs-4 mb-0">Engenharia de Dados, Automação de Processos & Sistemas B2B</p>
+                </div>
+                <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
+                    <i class="bi bi-sun-fill text-warning me-1" id="themeIcon"></i> <span id="themeText">Modo Claro</span>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col-xl-10">
+                    <p class="text-desc fs-5 mb-4">
+                        Especialista em construir arquiteturas de dados, automações de alto desempenho (RPA) e dashboards executivos. Elimino gargalos operacionais, integro sistemas legados e entrego inteligência de negócios orientada a resultados.
+                    </p>
+                    <div class="d-flex gap-4 flex-wrap fw-semibold">
+                        <span class="text-desc"><i class="bi bi-geo-alt-fill text-info me-1"></i> Campina Grande, PB</span>
+                        <span class="text-desc"><i class="bi bi-envelope-fill text-info me-1"></i> albertsantos1217@gmail.com</span>
+                        <span class="text-desc"><i class="bi bi-whatsapp text-success me-1"></i> (83) 99413-7413</span>
+                        <a href="https://linkedin.com/in/albert-alves-dos-santos-780717197" target="_blank" class="link-social">
+                            <i class="bi bi-linkedin text-info me-1"></i> LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="custom-container">
+
+        <!-- Áreas de Especialidade -->
+        <section class="mb-5">
+            <h2 class="fw-bold text-title-custom mb-4"><i class="bi bi-cpu-fill text-info me-2"></i>Soluções Empresariais</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom h-100 p-4">
+                        <i class="bi bi-window-stack text-info fs-1 mb-3"></i>
+                        <h4 class="fw-bold text-title-custom">Plataformas Sob Medida</h4>
+                        <p class="text-desc mb-0">Desenvolvimento de portais operacionais internos, dashboards de controle e sistemas de gestão unificados.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom h-100 p-4">
+                        <i class="bi bi-robot text-info fs-1 mb-3"></i>
+                        <h4 class="fw-bold text-title-custom">Automações Inteligentes (RPA)</h4>
+                        <p class="text-desc mb-0">Robôs autônomos para extração de dados, geração automática de relatórios e rotinas sem intervenção humana.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom h-100 p-4">
+                        <i class="bi bi-bar-chart-line-fill text-info fs-1 mb-3"></i>
+                        <h4 class="fw-bold text-title-custom">Inteligência de Dados & BI</h4>
+                        <p class="text-desc mb-0">Modelagem de dados e criação de painéis gerenciais interativos em tempo real para tomada de decisão estratégica.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom h-100 p-4">
+                        <i class="bi bi-diagram-2-fill text-info fs-1 mb-3"></i>
+                        <h4 class="fw-bold text-title-custom">Integração de Sistemas & APIs</h4>
+                        <p class="text-desc mb-0">Conexão fluida entre ERPs, CRMs, planilhas e portais governamentais, eliminando redigitação manual.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DINÂMICA COM GRÁFICOS INTERATIVOS -->
+        <section class="mb-5">
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2">
+                <div>
+                    <h2 class="fw-bold text-title-custom mb-1"><i class="bi bi-pie-chart-fill text-info me-2"></i>Soluções & Impacto Visual por Setor</h2>
+                    <p class="text-muted-custom mb-0">Selecione o segmento abaixo para visualizar os projetos e gráficos de performance:</p>
+                </div>
+            </div>
+
+            <!-- Filtros de Nicho -->
+            <div class="d-flex gap-3 flex-wrap mb-4">
+                <button class="niche-btn active" onclick="changeNiche('contabil', event)"><i class="bi bi-calculator me-1"></i> Contábil & Financeiro</button>
+                <button class="niche-btn" onclick="changeNiche('saude', event)"><i class="bi bi-heart-pulse me-1"></i> Saúde & Clínicas</button>
+                <button class="niche-btn" onclick="changeNiche('logistica', event)"><i class="bi bi-truck me-1"></i> Logística & Transportes</button>
+                <button class="niche-btn" onclick="changeNiche('varejo', event)"><i class="bi bi-cart3 me-1"></i> Varejo & E-commerce</button>
+                <button class="niche-btn" onclick="changeNiche('juridico', event)"><i class="bi bi-briefcase me-1"></i> Serviços & Jurídico</button>
+            </div>
+            
+            <div id="dynamic-content" class="dynamic-fade">
+                <div class="row g-4">
+                    <!-- Coluna da Esquerda: Estudo de Caso -->
+                    <div class="col-lg-7">
+                        <div class="card card-custom p-4 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="badge bg-primary fs-6 px-3 py-2" id="case1-badge">Portal Web B2B</span>
+                                    <span class="text-muted-custom small"><i class="bi bi-check-circle-fill text-success me-1"></i> Caso de Sucesso</span>
+                                </div>
+                                <h3 class="fw-bold text-title-custom mb-3" id="case1-title">Plataforma Integrada de Gestão Contábil & Tax</h3>
+                                <div class="mb-3">
+                                    <h6 class="fw-bold text-info text-uppercase small">Desafio Operacional</h6>
+                                    <p class="text-desc" id="case1-problem">Descentralização de dados fiscais, tempo excessivo gasto em digitação manual e alto risco de multas por inconsistência de prazos em entregas para clientes.</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h6 class="fw-bold text-info text-uppercase small">Solução Implementada</h6>
+                                    <p class="text-desc" id="case1-solution">Arquitetura de portal web unificado com controle financeiro, automação de disparo de guias e validação de documentos com alerta em tempo real.</p>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-4">
+                                    <div class="metric-box">
+                                        <div class="metric-number" id="m1-val">-75%</div>
+                                        <div class="text-muted-custom fw-semibold mt-1" id="m1-lbl">Tempo Manual</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="metric-box">
+                                        <div class="metric-number" style="color:var(--accent-blue)" id="m2-val">100%</div>
+                                        <div class="text-muted-custom fw-semibold mt-1" id="m2-lbl">Compliance</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="metric-box">
+                                        <div class="metric-number" id="m3-val">Zero</div>
+                                        <div class="text-muted-custom fw-semibold mt-1" id="m3-lbl">Atrasos/Multas</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna da Direita: GRÁFICO DADOS AO VIVO -->
+                    <div class="col-lg-5">
+                        <div class="card card-custom p-4 h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h4 class="fw-bold text-title-custom mb-1"><i class="bi bi-graph-up-arrow text-success me-2"></i>Métricas de Desempenho</h4>
+                                <p class="text-muted-custom small mb-3">Redução de horas operacionais vs. Ganho de eficiência</p>
+                                <div class="chart-wrapper mb-3">
+                                    <canvas id="nicheChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="border-top pt-3 border-secondary border-opacity-25">
+                                <h6 class="fw-bold text-title-custom mb-2 fs-6" id="case2-title">Robô RPA & Pipeline de Extração de Dados</h6>
+                                <p class="text-desc small mb-3" id="case2-problem">Coleta automatizada e diária de relatórios de portais governamentais e sistemas de terceiros sem necessidade de intervenção humana.</p>
+                                <div id="tech-tags">
+                                    <span class="badge-tech">Python</span>
+                                    <span class="badge-tech">PostgreSQL</span>
+                                    <span class="badge-tech">RPA Frameworks</span>
+                                    <span class="badge-tech">Docker</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arquitetura e Tecnologias (SEÇÃO CORRIGIDA SEM BUG VISUAL) -->
+        <section class="mb-5">
+            <h2 class="fw-bold text-title-custom mb-4"><i class="bi bi-layers-half text-info me-2"></i>Tecnologias & Arquitetura de Software</h2>
+            <div class="card card-custom p-4">
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle mb-0" style="color: var(--text-body); background: transparent;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-color);">
+                                <th style="width: 28%; font-size: 1.1rem; background: transparent; color: var(--accent-blue);" class="pb-3">Camada</th>
+                                <th style="width: 32%; font-size: 1.1rem; background: transparent; color: var(--accent-blue);" class="pb-3">Stack Utilizada</th>
+                                <th style="width: 40%; font-size: 1.1rem; background: transparent; color: var(--accent-blue);" class="pb-3">Benefício para a Empresa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td class="fw-bold text-title-custom fs-5 py-3" style="background: transparent;">
+                                    <i class="bi bi-terminal me-2 text-info"></i>Backend & RPA
+                                </td>
+                                <td class="fw-semibold fs-6 py-3" style="background: transparent; color: var(--text-body);">Python, Node.js, R, Shell Scripting</td>
+                                <td class="text-desc py-3" style="background: transparent; color: var(--text-muted);">Processamento veloz de dados, estabilidade e automação de tarefas rotineiras sem falhas.</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td class="fw-bold text-title-custom fs-5 py-3" style="background: transparent;">
+                                    <i class="bi bi-layout-text-window-reverse me-2 text-info"></i>Frontend & Dashboards
+                                </td>
+                                <td class="fw-semibold fs-6 py-3" style="background: transparent; color: var(--text-body);">HTML5, CSS3, Tailwind, JavaScript, Power BI</td>
+                                <td class="text-desc py-3" style="background: transparent; color: var(--text-muted);">Interfaces intuitivas, responsivas e painéis visuais que eliminam a necessidade de treinamento.</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td class="fw-bold text-title-custom fs-5 py-3" style="background: transparent;">
+                                    <i class="bi bi-database me-2 text-info"></i>Banco de Dados
+                                </td>
+                                <td class="fw-semibold fs-6 py-3" style="background: transparent; color: var(--text-body);">PostgreSQL, Supabase, MySQL, SQLite</td>
+                                <td class="text-desc py-3" style="background: transparent; color: var(--text-muted);">Segurança da informação, integridade referencial, consultas rápidas e backups na nuvem.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-title-custom fs-5 py-3" style="background: transparent;">
+                                    <i class="bi bi-cloud-check me-2 text-info"></i>Infraestrutura & VPS
+                                </td>
+                                <td class="fw-semibold fs-6 py-3" style="background: transparent; color: var(--text-body);">Docker, Linux VPS, Railway, Render, Vercel</td>
+                                <td class="text-desc py-3" style="background: transparent; color: var(--text-muted);">Sistemas operando 24/7 com alta disponibilidade e baixíssimo custo fixo de servidores.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Como Funciona / Processo -->
+        <section class="mb-5">
+            <h2 class="fw-bold text-title-custom mb-4"><i class="bi bi-diagram-3-fill text-info me-2"></i>Como Funciona o Processo</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom p-4 h-100">
+                        <div class="step-number">01</div>
+                        <h4 class="fw-bold text-title-custom mb-2">Diagnóstico</h4>
+                        <p class="text-desc mb-0">Mapeamento detalhado dos gargalos, rotinas manuais e oportunidades de automação e BI.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom p-4 h-100">
+                        <div class="step-number">02</div>
+                        <h4 class="fw-bold text-title-custom mb-2">Arquitetura</h4>
+                        <p class="text-desc mb-0">Desenho da solução técnica, prototipação visual dos painéis e alinhamento do escopo.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom p-4 h-100">
+                        <div class="step-number">03</div>
+                        <h4 class="fw-bold text-title-custom mb-2">Construção</h4>
+                        <p class="text-desc mb-0">Desenvolvimento ágil em módulos, validação periódica de código e rigorosos testes de dados.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="card card-custom p-4 h-100">
+                        <div class="step-number">04</div>
+                        <h4 class="fw-bold text-title-custom mb-2">Entrega & Suporte</h4>
+                        <p class="text-desc mb-0">Implantação em produção (nuvem/VPS), treinamento da equipe e plano de manutenção contínua.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Final -->
+        <section class="mb-4">
+            <div class="card card-custom p-5 text-center border-info">
+                <h3 class="fw-bold text-title-custom mb-2 display-6">Vamos Otimizar as Operações da Sua Empresa?</h3>
+                <p class="text-desc mb-4 fs-5 max-w-700 mx-auto">Agende uma conversa técnica sem compromisso para diagnosticar onde automações e inteligência de dados podem cortar custos e economizar horas do seu time.</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="https://wa.me/5583994137413" target="_blank" class="btn btn-whatsapp btn-lg rounded-pill"><i class="bi bi-whatsapp me-2"></i>Falar no WhatsApp Direct</a>
+                    <a href="https://linkedin.com/in/albert-alves-dos-santos-780717197" target="_blank" class="btn btn-outline-info btn-lg rounded-pill px-4"><i class="bi bi-linkedin me-2"></i>LinkedIn</a>
+                    <a href="mailto:albertsantos1217@gmail.com" class="btn btn-outline-secondary btn-lg rounded-pill px-4"><i class="bi bi-envelope me-2"></i>E-mail</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Scripts de Dados e Renderização -->
+    <script>
+        let myNicheChart = null;
+
+        const nicheData = {
+            contabil: {
+                case1Badge: "Portal Web B2B & Tax",
+                case1Title: "Plataforma Integrada de Gestão Contábil & Tax",
+                case1Problem: "Descentralização de dados fiscais, tempo excessivo gasto em digitação manual e risco de multas por inconsistência de prazos.",
+                case1Solution: "Arquitetura de portal web unificado com controle financeiro, automação de disparo de guias e validação de documentos com alerta em tempo real.",
+                m1Val: "-75%", m1Lbl: "Tempo Manual",
+                m2Val: "100%", m2Lbl: "Compliance",
+                m3Val: "Zero", m3Lbl: "Multas/Atrasos",
+                case2Title: "Pipeline Automatizado de Extração & Compliance Fiscal",
+                case2Problem: "Coleta e conferência diária manual de relatórios de portais governamentais (e-CAC, Prefeituras) para dezenas de CNPJs.",
+                chartLabels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                chartDataBefore: [120, 115, 130, 125],
+                chartDataAfter: [25, 20, 18, 15]
+            },
+            saude: {
+                case1Badge: "Gestão Clínica & TISS",
+                case1Title: "Portal Centralizado de Prontuários & Agendamento Unificado",
+                case1Problem: "Falta de integração entre agendas médicas, atrasos no faturamento de convênios e absenteísmo constante de pacientes.",
+                case1Solution: "Desenvolvimento de plataforma web responsiva com confirmação automática via WhatsApp, prontuário eletrônico rápido e painel de faturamento TISS.",
+                m1Val: "-80%", m1Lbl: "Absenteísmo",
+                m2Val: "+60%", m2Lbl: "Atendimentos",
+                m3Val: "100%", m3Lbl: "Glosas Evitadas",
+                case2Title: "Robô RPA de Validação de Elegibilidade de Convênios",
+                case2Problem: "Equipe de recepção perdendo horas checando manualmente a elegibilidade do plano de saúde em portais de operadoras.",
+                chartLabels: ['Jan', 'Fev', 'Mar', 'Abr'],
+                chartDataBefore: [300, 280, 310, 290],
+                chartDataAfter: [40, 35, 30, 25]
+            },
+            logistica: {
+                case1Badge: "Torre de Controle Logística",
+                case1Title: "Torre de Controle Logística & Gestão de Entregas",
+                case1Problem: "Perda de visibilidade sobre o status de fretes em trânsito, atraso na prestação de contas dos motoristas e erros na emissão de CT-e/MDF-e.",
+                case1Solution: "Webapp com monitoramento em tempo real de rotas, upload automático de comprovantes de entrega e integração direta com ERP.",
+                m1Val: "+45%", m1Lbl: "Eficiência Frota",
+                m2Val: "100%", m2Lbl: "Rastreabilidade",
+                m3Val: "-90%", m3Lbl: "Erros de CT-e",
+                case2Title: "Leitor Automatizado OCR de Conhecimentos de Carga",
+                case2Problem: "Digitação manual de dados de centenas de notas fiscais e conhecimentos de transporte recebidos de motoristas.",
+                chartLabels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                chartDataBefore: [90, 85, 95, 100],
+                chartDataAfter: [15, 12, 10, 8]
+            },
+            varejo: {
+                case1Badge: "E-commerce & Marketplace Hub",
+                case1Title: "Hub de Integração de Estoque & Pedidos Multi-canal",
+                case1Problem: "Vender produtos sem estoque disponível devido ao atraso de sincronização manual entre a loja física, e-commerce e marketplaces.",
+                case1Solution: "Painel web unificado que centraliza os pedidos em tempo real, baixa o estoque automaticamente em todos os canais e gera etiquetas.",
+                m1Val: "Zero", m1Lbl: "Furo Estoque",
+                m2Val: "+55%", m2Lbl: "Produtividade",
+                m3Val: "5x", m3Lbl: "Velocidade Envios",
+                case2Title: "Robô Monitor de Preços Concorrentes & Reprecificação",
+                case2Problem: "Incapacidade de acompanhar as variações de preço dos concorrentes nos marketplaces para ajustar a margem de lucro.",
+                chartLabels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+                chartDataBefore: [50, 45, 60, 55, 50],
+                chartDataAfter: [5, 5, 4, 5, 4]
+            },
+            juridico: {
+                case1Badge: "Gestão Operacional B2B",
+                case1Title: "Sistema de Controle de Prazos & Processos Jurídicos",
+                case1Problem: "Alto risco de perda de prazos processuais e falta de padronização nas tarefas internas entre advogados e analistas.",
+                case1Solution: "Plataforma web personalizada com workflow de aprovação, distribuição automática de tarefas e alertas críticos via e-mail e dashboard.",
+                m1Val: "100%", m1Lbl: "Controle Prazos",
+                m2Val: "-70%", m2Lbl: "Tempo Busca",
+                m3Val: "Zero", m3Lbl: "Prazos Perdidos",
+                case2Title: "Robô de Captura de Intimações & Diários Oficiais",
+                case2Problem: "Consulta diária e busca manual no PJe, e-SAJ e Diários Oficiais para localizar novas citações e andamentos.",
+                chartLabels: ['Jan', 'Fev', 'Mar', 'Abr'],
+                chartDataBefore: [160, 170, 155, 165],
+                chartDataAfter: [20, 18, 15, 12]
+            }
+        };
+
+        function renderChart(labels, dataBefore, dataAfter) {
+            const ctx = document.getElementById('nicheChart').getContext('2d');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#e2e8f0' : '#334155';
+            const gridColor = isDark ? '#2a3a5c' : '#e2e8f0';
+
+            if (myNicheChart) {
+                myNicheChart.destroy();
+            }
+
+            myNicheChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Horas Gastas (Antes)',
+                            data: dataBefore,
+                            backgroundColor: 'rgba(239, 68, 68, 0.75)',
+                            borderColor: '#ef4444',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Horas Gastas (Com Automação)',
+                            data: dataAfter,
+                            backgroundColor: 'rgba(34, 197, 94, 0.85)',
+                            borderColor: '#22c55e',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: textColor, font: { size: 12, weight: '600' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor },
+                            title: { display: true, text: 'Horas de Trabalho', color: textColor }
+                        }
+                    }
+                }
+            });
+        }
+
+        function changeNiche(nicheKey, event) {
+            document.querySelectorAll('.niche-btn').forEach(btn => btn.classList.remove('active'));
+            if(event) event.currentTarget.classList.add('active');
+
+            const content = document.getElementById('dynamic-content');
+            content.style.opacity = 0;
+
+            setTimeout(() => {
+                const data = nicheData[nicheKey];
+                
+                document.getElementById('case1-badge').innerText = data.case1Badge;
+                document.getElementById('case1-title').innerText = data.case1Title;
+                document.getElementById('case1-problem').innerText = data.case1Problem;
+                document.getElementById('case1-solution').innerText = data.case1Solution;
+                
+                document.getElementById('m1-val').innerText = data.m1Val;
+                document.getElementById('m1-lbl').innerText = data.m1Lbl;
+                document.getElementById('m2-val').innerText = data.m2Val;
+                document.getElementById('m2-lbl').innerText = data.m2Lbl;
+                document.getElementById('m3-val').innerText = data.m3Val;
+                document.getElementById('m3-lbl').innerText = data.m3Lbl;
+
+                document.getElementById('case2-title').innerText = data.case2Title;
+                document.getElementById('case2-problem').innerText = data.case2Problem;
+
+                renderChart(data.chartLabels, data.chartDataBefore, data.chartDataAfter);
+
+                content.style.opacity = 1;
+            }, 200);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            updateThemeButton(newTheme);
+
+            const activeNicheBtn = document.querySelector('.niche-btn.active');
+            const currentNiche = activeNicheBtn ? activeNicheBtn.getAttribute('onclick').match(/'([^']+)'/)[1] : 'contabil';
+            const data = nicheData[currentNiche];
+            renderChart(data.chartLabels, data.chartDataBefore, data.chartDataAfter);
+        }
+
+        function updateThemeButton(theme) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            if (theme === 'light') {
+                icon.className = 'bi bi-moon-stars-fill text-primary me-1';
+                text.innerText = 'Modo Escuro';
+            } else {
+                icon.className = 'bi bi-sun-fill text-warning me-1';
+                text.innerText = 'Modo Claro';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton(savedTheme);
+
+            changeNiche('contabil', null);
+        });
+    </script>
+</body>
+</html>
