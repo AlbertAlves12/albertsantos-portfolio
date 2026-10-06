@@ -54,7 +54,6 @@
             transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        /* Container Expandido para aproveitar a tela */
         .custom-container {
             width: 100%;
             max-width: 1440px;
@@ -361,7 +360,7 @@
             </div>
         </section>
 
-        <!-- Arquitetura e Tecnologias (SEÇÃO CORRIGIDA SEM BUG VISUAL) -->
+        <!-- Arquitetura e Tecnologias -->
         <section class="mb-5">
             <h2 class="fw-bold text-title-custom mb-4"><i class="bi bi-layers-half text-info me-2"></i>Tecnologias & Arquitetura de Software</h2>
             <div class="card card-custom p-4">
@@ -594,13 +593,19 @@
 
         function changeNiche(nicheKey, event) {
             document.querySelectorAll('.niche-btn').forEach(btn => btn.classList.remove('active'));
-            if(event) event.currentTarget.classList.add('active');
+
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else {
+                const targetBtn = document.querySelector(`.niche-btn[onclick*="'${nicheKey}'"]`);
+                if (targetBtn) targetBtn.classList.add('active');
+            }
 
             const content = document.getElementById('dynamic-content');
             content.style.opacity = 0;
 
             setTimeout(() => {
-                const data = nicheData[nicheKey];
+                const data = nicheData[nicheKey] || nicheData['contabil'];
                 
                 document.getElementById('case1-badge').innerText = data.case1Badge;
                 document.getElementById('case1-title').innerText = data.case1Title;
@@ -656,7 +661,18 @@
             document.documentElement.setAttribute('data-theme', savedTheme);
             updateThemeButton(savedTheme);
 
-            changeNiche('contabil', null);
+            const urlParams = new URLSearchParams(window.location.search);
+            const nicheParam = urlParams.get('nicho');
+
+            if (nicheParam && nicheData[nicheParam]) {
+                changeNiche(nicheParam, null);
+                const section = document.getElementById('dynamic-content');
+                if(section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                changeNiche('contabil', null);
+            }
         });
     </script>
 </body>
